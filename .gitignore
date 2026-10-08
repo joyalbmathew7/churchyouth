@@ -1,0 +1,28 @@
+cat > .gitignore <<'EOF'
+# Secrets
+.env
+.env.*
+!.env.example
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+
+# Django
+staticfiles/
+db.sqlite3
+*.log
+
+# React
+node_modules/
+dist/
+
+# Vercel
+.vercel/
+
+# Editors and operating system
+.vscode/
+.DS_Store
+EOF
