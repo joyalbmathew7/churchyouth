@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.1/ref/settings/
 """
 import os
+from urllib.parse import parse_qs, unquote, urlparse
 from dotenv import load_dotenv
+from django.core.exceptions import ImproperlyConfigured
 
 load_dotenv()
 from pathlib import Path
@@ -22,18 +24,58 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-bcmdoxbs3pa19s=la2nf0iquz27&=jjd$r_age95!o7gwo&caj'
+DEBUG = os.getenv("DEBUG", "True").strip().lower() in {"1", "true", "yes"}
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+SECRET_KEY = os.getenv("DJANGO_SECRET_KEY")
+if not SECRET_KEY:
+    if not DEBUG:
+        raise ImproperlyConfigured(
+            "Set DJANGO_SECRET_KEY when DEBUG is disabled."
+        )
+    SECRET_KEY = "django-insecure-local-development-only-key"
 
-ALLOWED_HOSTS = [
-    "churchyouth.onrender.com",
-    "localhost",
-    "127.0.0.1",
-]
-CORS_ALLOW_ALL_ORIGINS = True
+
+def csv_environment(name, default=()):
+    value = os.getenv(name)
+    if value is None:
+        return list(default)
+    return [item.strip() for item in value.split(",") if item.strip()]
+
+
+ALLOWED_HOSTS = csv_environment(
+    "ALLOWED_HOSTS",
+    ("churchyouth.onrender.com", "localhost", "127.0.0.1"),
+)
+CORS_ALLOWED_ORIGINS = csv_environment(
+    "CORS_ALLOWED_ORIGINS",
+    (
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:5174",
+        "http://127.0.0.1:5174",
+    ),
+)
+CORS_ALLOW_ALL_ORIGINS = False
+CSRF_TRUSTED_ORIGINS = csv_environment(
+    "CSRF_TRUSTED_ORIGINS",
+    (
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+        "http://localhost:5174",
+        "http://127.0.0.1:5174",
+    ),
+)
+SESSION_COOKIE_SECURE = not DEBUG
+CSRF_COOKIE_SECURE = not DEBUG
+SESSION_COOKIE_SAMESITE = "Lax"
+CSRF_COOKIE_SAMESITE = "Lax"
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+SECURE_SSL_REDIRECT = not DEBUG
+SECURE_HSTS_SECONDS = 31_536_000 if not DEBUG else 0
+SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+SECURE_HSTS_PRELOAD = False
 
 # Application definition
 
@@ -54,6 +96,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
       "corsheaders.middleware.CorsMiddleware", 
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -67,13 +110,14 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'forms.context_processors.admin_dashboard',
             ],
         },
     },
@@ -85,12 +129,40 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+database_url = os.getenv("DATABASE_URL", "").strip()
+if database_url:
+    parsed_database_url = urlparse(database_url)
+    if parsed_database_url.scheme not in {
+        "postgres",
+        "postgresql",
+        "postgresql+psycopg",
+    }:
+        raise ImproperlyConfigured(
+            "DATABASE_URL must use a PostgreSQL URL."
+        )
+    database_options = {}
+    ssl_modes = parse_qs(parsed_database_url.query).get("sslmode")
+    if ssl_modes:
+        database_options["sslmode"] = ssl_modes[0]
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": unquote(parsed_database_url.path.lstrip("/")),
+            "USER": unquote(parsed_database_url.username or ""),
+            "PASSWORD": unquote(parsed_database_url.password or ""),
+            "HOST": parsed_database_url.hostname or "",
+            "PORT": parsed_database_url.port or "",
+            "OPTIONS": database_options,
+            "CONN_MAX_AGE": int(os.getenv("DB_CONN_MAX_AGE", "60")),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / 'db.sqlite3',
+        }
+    }
 
 
 # Password validation
@@ -127,7 +199,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.1/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / "staticfiles"
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 
 # Email
@@ -135,7 +216,20 @@ STATIC_URL = 'static/'
 
 MAILERS = {
     'default': {
-        'BACKEND': 'django.core.mail.backends.console.EmailBackend',
+        'BACKEND': os.getenv(
+            "EMAIL_BACKEND",
+            "django.core.mail.backends.console.EmailBackend"
+            if DEBUG
+            else "django.core.mail.backends.smtp.EmailBackend",
+        ),
+        "HOST": os.getenv("EMAIL_HOST", "localhost"),
+        "PORT": int(os.getenv("EMAIL_PORT", "25")),
+        "USERNAME": os.getenv("EMAIL_HOST_USER", ""),
+        "PASSWORD": os.getenv("EMAIL_HOST_PASSWORD", ""),
+        "USE_TLS": os.getenv("EMAIL_USE_TLS", "False").lower()
+        in {"1", "true", "yes"},
+        "USE_SSL": os.getenv("EMAIL_USE_SSL", "False").lower()
+        in {"1", "true", "yes"},
     },
 }
 RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID")

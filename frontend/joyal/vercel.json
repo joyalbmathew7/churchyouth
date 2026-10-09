@@ -1,0 +1,16 @@
+{
+  "rewrites": [
+    {
+      "source": "/joyaladmin",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/donation/:path*",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/joyaladmin/:path*",
+      "destination": "/index.html"
+    }
+  ]
+}

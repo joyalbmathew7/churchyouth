@@ -1,0 +1,101 @@
+{% extends "admin/base_site.html" %}
+{% load i18n static %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <style>
+    .church-dashboard { margin: 1.5rem 0 2rem; color: #332b2d !important; }
+    .church-dashboard h2 { color: #482831; font-size: 1.35rem; }
+    .church-dashboard p { color: #69736e; }
+    .church-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin: 1.25rem 0 1.75rem; }
+    .church-metric, .church-chart { background: #fff; border: 1px solid #e8e1df; border-radius: 10px; padding: 1.15rem; box-shadow: 0 4px 14px rgb(40 31 33 / 4%); }
+    .church-metric span { display: block; color: #68736d; font-size: .82rem; }
+    .church-metric strong { display: block; margin-top: .55rem; color: #702b3a; font-size: 1.45rem; overflow-wrap: anywhere; }
+    .church-charts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+    .church-chart h3 { margin: 0 0 1rem; color: #482831; font-size: 1rem; }
+    .church-bar-row { display: grid; grid-template-columns: minmax(100px, 1fr) 2fr auto; gap: .65rem; align-items: center; margin: .8rem 0; font-size: .8rem; }
+    .church-bar-label { overflow-wrap: anywhere; color: #43393a !important; }
+    .church-bar-track { height: 8px; overflow: hidden; border-radius: 9px; background: #f0e9e8; }
+    .church-bar { height: 100%; border-radius: inherit; background: #853c4a; }
+    .church-bar-value { color: #59655f; white-space: nowrap; }
+    .church-admin-links { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1rem 0 2rem; }
+    .church-admin-links a { display: inline-block; padding: .65rem .95rem; border-radius: 6px; background: #702b3a; color: white; font-weight: 600; text-decoration: none; }
+    .church-admin-links a:hover { background: #54202c; }
+    @media (max-width: 900px) { .church-metrics { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 640px) { .church-charts { grid-template-columns: 1fr; } .church-bar-row { grid-template-columns: minmax(75px, 1fr) 1.2fr auto; gap: .4rem; } }
+    @media (max-width: 420px) { .church-metrics { grid-template-columns: 1fr; } }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="church-dashboard">
+    <h2>St. Stephen's C.S.I Church, Puthuval</h2>
+    <p>Giving overview · Only verified payments count toward received totals.</p>
+
+    <section class="church-metrics" aria-label="Donation summary">
+      <article class="church-metric">
+        <span>Total verified giving</span>
+        <strong>₹{{ church_dashboard.verified_total|floatformat:2 }}</strong>
+      </article>
+      <article class="church-metric">
+        <span>Verified donations</span>
+        <strong>{{ church_dashboard.verified_count }}</strong>
+      </article>
+      <article class="church-metric">
+        <span>Verified giving this month</span>
+        <strong>₹{{ church_dashboard.month_total|floatformat:2 }}</strong>
+      </article>
+      <article class="church-metric">
+        <span>Awaiting payment</span>
+        <strong>{{ church_dashboard.pending_count }}</strong>
+      </article>
+    </section>
+
+    <section class="church-charts" aria-label="Verified donations by category">
+      <article class="church-chart">
+        <h3>Verified giving by purpose</h3>
+        {% for group in church_dashboard.purpose_groups %}
+          <div class="church-bar-row">
+            <span class="church-bar-label">{{ group.name }}</span>
+            <span class="church-bar-track"><span class="church-bar" style="display:block;width:{{ group.percentage }}%"></span></span>
+            <span class="church-bar-value">₹{{ group.total|floatformat:2 }}</span>
+          </div>
+        {% empty %}
+          <p>No verified donations yet.</p>
+        {% endfor %}
+      </article>
+      <article class="church-chart">
+        <h3>Verified giving by prayer area</h3>
+        {% for group in church_dashboard.prayer_area_groups %}
+          <div class="church-bar-row">
+            <span class="church-bar-label">{{ group.name }}</span>
+            <span class="church-bar-track"><span class="church-bar" style="display:block;width:{{ group.percentage }}%"></span></span>
+            <span class="church-bar-value">₹{{ group.total|floatformat:2 }}</span>
+          </div>
+        {% empty %}
+          <p>No verified donations yet.</p>
+        {% endfor %}
+      </article>
+    </section>
+
+    <nav class="church-admin-links" aria-label="Donation management">
+      <a href="{{ church_dashboard.donation_url }}">Manage donations</a>
+      <a href="{{ church_dashboard.purpose_url }}">Manage purposes</a>
+      <a href="{{ church_dashboard.prayer_area_url }}">Manage prayer areas</a>
+    </nav>
+
+    {% if church_dashboard and app_list %}
+      <div id="content-main">
+        {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
+      </div>
+    {% endif %}
+    {% if not church_dashboard %}
+      <p>You do not have permission to view donation summaries. Use the navigation to open sections you are authorized to manage.</p>
+      {% if app_list %}
+        <div id="content-main">
+          {% include "admin/app_list.html" with app_list=app_list show_changelinks=True %}
+        </div>
+      {% endif %}
+    {% endif %}
+  </div>
+{% endblock %}

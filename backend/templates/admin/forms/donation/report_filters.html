@@ -1,0 +1,61 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+  <div id="content-main">
+    <form method="get" action="{% url 'admin:forms_donation_report_pdf' %}">
+      <fieldset class="module aligned">
+        <h2>{% translate "Filter donation report" %}</h2>
+        <div class="form-row">
+          <div>
+            <label for="id_prayer_area">{% translate "Prayer area" %}</label>
+            <select id="id_prayer_area" name="prayer_area">
+              <option value="">{% translate "All prayer areas" %}</option>
+              {% for area in prayer_areas %}
+                <option value="{{ area.pk }}">{{ area.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <label for="id_purpose">{% translate "Donation purpose" %}</label>
+            <select id="id_purpose" name="purpose">
+              <option value="">{% translate "All purposes" %}</option>
+              {% for purpose in purposes %}
+                <option value="{{ purpose.pk }}">{{ purpose.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <label for="id_payment_status">{% translate "Payment status" %}</label>
+            <select id="id_payment_status" name="payment_status">
+              <option value="">{% translate "All statuses" %}</option>
+              {% for value, label in payment_statuses %}
+                <option value="{{ value }}">{{ label }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <label for="id_date_from">{% translate "From date" %}</label>
+            <input id="id_date_from" type="date" name="date_from">
+          </div>
+        </div>
+        <div class="form-row">
+          <div>
+            <label for="id_date_to">{% translate "To date" %}</label>
+            <input id="id_date_to" type="date" name="date_to">
+          </div>
+        </div>
+      </fieldset>
+      <div class="submit-row">
+        <input type="submit" value="{% translate 'Download PDF report' %}" class="default">
+        <a href="{% url 'admin:forms_donation_changelist' %}" class="closelink">{% translate "Back to donations" %}</a>
+      </div>
+    </form>
+  </div>
+{% endblock %}

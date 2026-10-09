@@ -1,0 +1,25 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ title }} | St. Stephen's C.S.I Church, Puthuval{% endblock %}
+
+{% block branding %}
+  <div id="site-name">
+    <a href="{% url 'admin:index' %}">St. Stephen's C.S.I Church, Puthuval</a>
+  </div>
+{% endblock %}
+
+{% block extrastyle %}
+  {{ block.super }}
+  <style>
+    :root { --church-burgundy: #702b3a; --church-burgundy-dark: #54202c; --church-ivory: #fbf8f6; }
+    #header { background: var(--church-burgundy); color: #fff; }
+    #branding h1, #branding h1 a:link, #branding h1 a:visited { color: #fff; font-weight: 600; }
+    div.breadcrumbs { background: #f3ebea; color: #54494b; }
+    div.breadcrumbs a { color: var(--church-burgundy-dark); }
+    .module h2, .module caption, .inline-group h2 { background: var(--church-burgundy); }
+    input[type=submit].default, .submit-row input.default { background: var(--church-burgundy); }
+    input[type=submit].default:hover, .submit-row input.default:hover { background: var(--church-burgundy-dark); }
+    .button, input[type=submit], input[type=button], .submit-row input, a.button { border-radius: 4px; }
+    #content { max-width: 1440px; }
+  </style>
+{% endblock %}

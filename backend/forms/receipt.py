@@ -28,13 +28,14 @@ def create_donation_receipt(donation):
     styles = getSampleStyleSheet()
 
     title_style = styles["Title"]
+    title_style.textColor = colors.HexColor("#702b3a")
     normal_style = styles["Normal"]
 
     elements = []
 
     elements.append(
         Paragraph(
-            "St. Stephen CSI PUTHUVAL",
+            "St. Stephen's C.S.I Church, Puthuval",
             title_style,
         )
     )
@@ -86,14 +87,14 @@ def create_donation_receipt(donation):
                     "BACKGROUND",
                     (0, 0),
                     (0, -1),
-                    colors.lightgrey,
+                    colors.HexColor("#f3ebea"),
                 ),
                 (
                     "GRID",
                     (0, 0),
                     (-1, -1),
                     0.5,
-                    colors.grey,
+                    colors.HexColor("#b9a7aa"),
                 ),
                 (
                     "VALIGN",
