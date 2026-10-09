@@ -28,8 +28,11 @@ SECRET_KEY = 'django-insecure-bcmdoxbs3pa19s=la2nf0iquz27&=jjd$r_age95!o7gwo&caj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = [
+    "churchyouth.onrender.com",
+    "localhost",
+    "127.0.0.1",
+]
 CORS_ALLOW_ALL_ORIGINS = True
 
 # Application definition
