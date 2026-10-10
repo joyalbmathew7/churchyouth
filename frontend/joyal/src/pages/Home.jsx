@@ -123,7 +123,7 @@ function Home() {
 
                         <h1>
                             Welcome to <br />
-                            <span className="highlight">Our Church Community</span>
+                            <span className="highlight">St Stephen's CSI Church Youth</span>
                         </h1>
 
                         <p className="home-description">
@@ -148,7 +148,7 @@ function Home() {
                 <section className="youth-section">
                     <div className="youth-heading">
                         <span className="home-badge">UNITED IN FAITH</span>
-                        <h2>Our Youth Team</h2>
+                        <h2>2026 - 2027 youth officials members</h2>
                         <p>
                             Meet the dedicated individuals who lead, support, and serve
                             our church youth community with passion.
