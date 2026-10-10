@@ -67,6 +67,11 @@ CSRF_TRUSTED_ORIGINS = csv_environment(
         "http://127.0.0.1:5174",
     ),
 )
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "https://churchyouth-frontend-nine.vercel.app",
+]
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
 SESSION_COOKIE_SAMESITE = "Lax"

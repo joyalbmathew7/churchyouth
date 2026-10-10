@@ -895,3 +895,22 @@
     font-size: 9px;
   }
 }
+
+.back-home-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    margin-bottom: 20px;
+    border: 1px solid #bffecc;
+    border-radius: 8px;
+    background: #ffafaf;
+    color: #234b38;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+.back-home-button:hover {
+    background: #85ff99;
+}

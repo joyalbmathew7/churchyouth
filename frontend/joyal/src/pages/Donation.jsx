@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./Donation.css";
+import { Link } from "react-router-dom";
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "").replace(
     /\/+$/,
@@ -140,6 +141,12 @@ function Donation() {
             requests.map(async ({ url, onSuccess, onStateChange, fallback }) => {
                 try {
                     const response = await fetch(url);
+// # Leave empty for local Vite development, which uses the configured proxy.
+// VITE_API_BASE_URL=
+
+// # Optional override for the local Vite API/admin proxy.
+// VITE_API_PROXY_TARGET=http://127.0.0.1:8000
+// const response = await fetch(url);
                     const data = await readResponse(response);
                     if (!response.ok || !Array.isArray(data)) {
                         throw new Error(getErrorMessage(data, fallback));
@@ -388,6 +395,7 @@ function Donation() {
                     Make a donation
                     <span aria-hidden="true">↗</span>
                 </a>
+                <Link to="/" className="back-home-button">Home</Link>
             </header>
 
             <main>
