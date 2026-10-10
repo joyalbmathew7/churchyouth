@@ -1,363 +1,772 @@
-/* Modern Reset & Theme Variables */
-:root {
-    --primary-color: #0f172a;
-    --primary-light: #1e293b;
-    --accent-color: #d97706; /* Warm Gold */
-    --accent-hover: #b45309;
-    --bg-main: #f8fafc;
-    --bg-card: #ffffff;
-    --text-main: #334155;
-    --text-muted: #64748b;
-    --border-color: #e2e8f0;
-    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
-    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
-    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-    --radius-lg: 16px;
-    --radius-full: 9999px;
+
+.home-page {
+--church-red: #9f1239;
+--church-red-dark: #650d25;
+--church-red-light: #e11d48;
+--church-gold: #d4a85a;
+--church-text: #33252a;
+--church-muted: #75666b;
+--church-white: #ffffff;
+--church-soft: #fff7f8;
+
+min-height: 100vh;
+background: var(--church-white);
+color: var(--church-text);
+font-family: "Inter", "Segoe UI", Arial, sans-serif;
+overflow: hidden;
+
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
+.home-page *,
+.home-page *::before,
+.home-page *::after {
+box-sizing: border-box;
 }
 
-body {
-    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background-color: var(--bg-main);
-    color: var(--text-main);
-    line-height: 1.6;
+.home-page a {
+text-decoration: none;
+}
+
+/* ================================
+HEADER / NAVBAR
+================================ */
+
+.home-header {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+
+    padding: 14px 7%;
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+
+    border-bottom: 1px solid #f1dfe4;
+    box-shadow: 0 4px 18px rgba(101, 13, 37, 0.08);
 }
 
 .home-page {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Header Styles */
-.home-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 5%;
-    background-color: var(--bg-card);
-    box-shadow: var(--shadow-sm);
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    /* Keep your existing variables and other properties. */
+    overflow: clip;
 }
 
 .home-brand {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    text-decoration: none;
-    color: var(--primary-color);
+display: flex;
+align-items: center;
+gap: 13px;
+min-width: 0;
+color: var(--church-red-dark);
 }
 
 .home-logo-wrapper {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    overflow: hidden;
-    background: #f1f5f9;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 2px solid var(--border-color);
+display: flex;
+align-items: center;
+justify-content: center;
+width: 55px;
+height: 55px;
+flex-shrink: 0;
+padding: 5px;
+background: #fff4f6;
+border: 1px solid #f0d4dc;
+border-radius: 50%;
+overflow: hidden;
 }
 
 .home-logo {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+display: block;
+width: 100%;
+height: 100%;
+object-fit: contain;
 }
 
 .brand-text {
-    display: flex;
-    flex-direction: column;
+display: flex;
+flex-direction: column;
+gap: 4px;
 }
 
 .brand-text strong {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--primary-color);
+color: var(--church-red-dark);
+font-size: 17px;
+font-weight: 800;
+line-height: 1.35;
 }
 
 .brand-text span {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-    font-weight: 500;
-    letter-spacing: 0.5px;
+color: #8c6873;
+font-size: 13px;
+letter-spacing: 1.5px;
+text-transform: uppercase;
 }
 
 .nav-donate {
-    background-color: var(--accent-color);
-    color: white;
-    padding: 0.6rem 1.4rem;
-    border-radius: var(--radius-full);
-    font-weight: 600;
-    font-size: 0.9rem;
-    text-decoration: none;
-    transition: all 0.2s ease;
-    box-shadow: 0 4px 10px rgba(217, 119, 6, 0.25);
+display: inline-flex;
+align-items: center;
+justify-content: center;
+padding: 12px 23px;
+background: var(--church-red);
+color: #ffffff;
+border: 1px solid var(--church-red);
+border-radius: 7px;
+font-size: 14px;
+font-weight: 700;
+white-space: nowrap;
+box-shadow: 0 5px 14px rgba(159, 18, 57, 0.15);
+transition:
+background 0.2s ease,
+transform 0.2s ease,
+box-shadow 0.2s ease;
 }
 
 .nav-donate:hover {
-    background-color: var(--accent-hover);
-    transform: translateY(-1px);
+background: var(--church-red-dark);
+transform: translateY(-2px);
+box-shadow: 0 8px 18px rgba(101, 13, 37, 0.2);
 }
 
-/* Hero Section */
+/* ================================
+HERO SECTION
+================================ */
+
 .home-hero {
-    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-    color: white;
-    padding: 5rem 5% 6rem;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
+position: relative;
+isolation: isolate;
+display: flex;
+align-items: center;
+min-height: 570px;
+padding: 80px 7%;
+background:
+radial-gradient(
+circle at 85% 20%,
+rgba(255, 255, 255, 0.12),
+transparent 30%
+),
+linear-gradient(
+120deg,
+#650d25 0%,
+#921337 48%,
+#c21e49 100%
+);
+color: #ffffff;
+overflow: hidden;
+}
+
+.home-hero::before {
+position: absolute;
+z-index: -1;
+top: -150px;
+right: -100px;
+width: 440px;
+height: 440px;
+content: "";
+border: 1px solid rgba(255, 255, 255, 0.12);
+border-radius: 50%;
+}
+
+.home-hero::after {
+position: absolute;
+z-index: -1;
+right: 80px;
+bottom: -260px;
+width: 520px;
+height: 520px;
+content: "";
+border: 1px solid rgba(255, 255, 255, 0.1);
+border-radius: 50%;
 }
 
 .home-content {
-    max-width: 750px;
-    margin: 0 auto;
+width: 100%;
+max-width: 850px;
+margin: 0 auto;
+animation: home-hero-enter 0.7s ease both;
 }
 
 .home-badge {
-    display: inline-block;
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: var(--accent-color);
-    background: rgba(217, 119, 6, 0.1);
-    padding: 0.35rem 1rem;
-    border-radius: var(--radius-full);
-    margin-bottom: 1.5rem;
-    border: 1px solid rgba(217, 119, 6, 0.2);
+display: inline-flex;
+align-items: center;
+gap: 8px;
+margin-bottom: 22px;
+padding: 8px 13px;
+background: rgba(255, 255, 255, 0.1);
+color: #ffe5a9;
+border: 1px solid rgba(255, 229, 169, 0.4);
+border-radius: 5px;
+font-size: 11px;
+font-weight: 800;
+letter-spacing: 2.2px;
 }
 
-.home-hero h1 {
-    font-size: clamp(2.2rem, 5vw, 3.5rem);
-    font-weight: 800;
-    line-height: 1.2;
-    margin-bottom: 1.2rem;
-    color: #ffffff;
+.home-content h1 {
+max-width: 800px;
+margin: 0 0 22px;
+color: #ffffff;
+font-size: clamp(36px, 5.5vw, 65px);
+font-weight: 800;
+line-height: 1.13;
+letter-spacing: -1.5px;
 }
 
-.home-hero h1 .highlight {
-    color: #fbbf24;
+.home-content h1 .highlight {
+color: #ffe0a0;
 }
 
 .home-description {
-    font-size: 1.1rem;
-    color: #94a3b8;
-    margin-bottom: 2rem;
-    line-height: 1.7;
+max-width: 620px;
+margin: 0 0 30px;
+color: rgba(255, 255, 255, 0.87);
+font-size: 17px;
+line-height: 1.9;
 }
 
 .home-actions {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-bottom: 2.5rem;
+display: flex;
+align-items: center;
+flex-wrap: wrap;
+gap: 15px;
 }
 
 .home-donate-button {
-    background-color: var(--accent-color);
-    color: white;
-    padding: 0.85rem 2rem;
-    border-radius: var(--radius-full);
-    font-weight: 600;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: all 0.25s ease;
-    box-shadow: 0 4px 15px rgba(217, 119, 6, 0.3);
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 18px;
+padding: 15px 24px;
+background: #ffffff;
+color: var(--church-red-dark);
+border: 1px solid #ffffff;
+border-radius: 7px;
+font-size: 15px;
+font-weight: 800;
+box-shadow: 0 7px 20px rgba(40, 0, 12, 0.15);
+transition:
+background 0.2s ease,
+color 0.2s ease,
+transform 0.2s ease;
+}
+
+.home-donate-button span {
+font-size: 20px;
+transition: transform 0.2s ease;
 }
 
 .home-donate-button:hover {
-    background-color: var(--accent-hover);
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(217, 119, 6, 0.4);
+background: #ffe9ed;
+color: var(--church-red-dark);
+transform: translateY(-3px);
 }
 
+.home-donate-button:hover span {
+transform: translateX(4px);
+}
+
+/* Bible verse */
 .home-verse {
-    border-left: none;
-    padding: 1.2rem;
-    background: rgba(255, 255, 255, 0.03);
-    border-radius: 12px;
-    border: 1px solid rgba(255, 255, 255, 0.08);
+max-width: 540px;
+margin: 38px 0 0;
+padding: 18px 22px;
+border-left: 3px solid var(--church-gold);
+background: rgba(255, 255, 255, 0.07);
+border-radius: 0 8px 8px 0;
 }
 
 .home-verse p {
-    font-style: italic;
-    font-size: 1.05rem;
-    color: #e2e8f0;
-    margin-bottom: 0.4rem;
+margin: 0 0 9px;
+color: #ffffff;
+font-size: 17px;
+font-style: italic;
+line-height: 1.7;
 }
 
 .home-verse cite {
-    font-size: 0.85rem;
-    color: var(--accent-color);
-    font-weight: 600;
-    font-style: normal;
+color: #ffe0a0;
+font-size: 13px;
+font-style: normal;
+font-weight: 700;
 }
 
-/* Youth Section */
+/* ================================
+YOUTH SECTION
+================================ */
+
 .youth-section {
-    padding: 5rem 5%;
-    max-width: 1280px;
-    margin: 0 auto;
-    width: 100%;
+padding: 85px 7%;
+background:
+linear-gradient(
+180deg,
+#fff8f9 0%,
+#ffffff 35%,
+#fffafa 100%
+);
 }
 
 .youth-heading {
-    text-align: center;
-    max-width: 600px;
-    margin: 0 auto 4rem;
+max-width: 760px;
+margin: 0 auto 55px;
+text-align: center;
+}
+
+.youth-heading .home-badge {
+margin-bottom: 17px;
+background: #fff0f3;
+color: var(--church-red);
+border-color: #f1cbd5;
 }
 
 .youth-heading h2 {
-    font-size: 2.2rem;
-    font-weight: 800;
-    color: var(--primary-color);
-    margin: 0.5rem 0 1rem;
+margin: 0 0 16px;
+color: var(--church-red-dark);
+font-size: clamp(28px, 4vw, 43px);
+font-weight: 800;
+line-height: 1.25;
+letter-spacing: -0.7px;
 }
 
 .youth-heading p {
-    color: var(--text-muted);
-    font-size: 1.05rem;
+max-width: 650px;
+margin: 0 auto;
+color: var(--church-muted);
+font-size: 16px;
+line-height: 1.9;
 }
 
+/* Groups */
 .youth-group {
-    margin-bottom: 4rem;
+max-width: 1200px;
+margin: 0 auto 55px;
+}
+
+.youth-group:last-child {
+margin-bottom: 0;
 }
 
 .group-title {
-    font-size: 1.4rem;
-    font-weight: 700;
-    color: var(--primary-color);
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid var(--border-color);
-    display: inline-block;
+display: flex;
+align-items: center;
+gap: 14px;
+margin: 0 0 25px;
+color: var(--church-red-dark);
+font-size: 25px;
+font-weight: 800;
 }
 
-/* Youth Grid */
+.group-title::before {
+display: block;
+width: 5px;
+height: 29px;
+content: "";
+background: var(--church-red);
+border-radius: 5px;
+}
+
+.group-title::after {
+flex: 1;
+height: 1px;
+content: "";
+background: #eed5dc;
+}
+
+/* Cards grid */
 .youth-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 1.5rem;
+display: grid;
+grid-template-columns: repeat(3, minmax(0, 1fr));
+gap: 24px;
 }
 
 .officials-grid {
-    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
+.committee-grid {
+grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+/* Individual member card */
 .youth-card {
-    background-color: var(--bg-card);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    box-shadow: var(--shadow-sm);
-    border: 1px solid var(--border-color);
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-    display: flex;
-    flex-direction: column;
-    text-align: center;
+position: relative;
+display: flex;
+flex-direction: column;
+min-width: 0;
+background: #ffffff;
+border: 1px solid #f0e0e4;
+border-radius: 13px;
+overflow: hidden;
+box-shadow: 0 5px 20px rgba(101, 13, 37, 0.045);
+transition:
+transform 0.25s ease,
+box-shadow 0.25s ease,
+border-color 0.25s ease;
 }
 
 .youth-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-lg);
-    border-color: rgba(217, 119, 6, 0.3);
+transform: translateY(-6px);
+border-color: #dfabb9;
+box-shadow: 0 15px 32px rgba(101, 13, 37, 0.12);
 }
 
 .youth-avatar-container {
-    width: 100%;
-    height: 220px;
-    overflow: hidden;
-    background-color: #f1f5f9;
-    position: relative;
+position: relative;
+display: flex;
+align-items: center;
+justify-content: center;
+height: 225px;
+padding: 22px;
+background:
+linear-gradient(
+145deg,
+#fff0f3 0%,
+#f9e0e7 100%
+);
+overflow: hidden;
+}
+
+.youth-avatar-container::after {
+position: absolute;
+right: -30px;
+bottom: -50px;
+width: 140px;
+height: 140px;
+content: "";
+border: 1px solid rgba(159, 18, 57, 0.08);
+border-radius: 50%;
+pointer-events: none;
 }
 
 .youth-avatar-img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.5s ease;
+position: relative;
+z-index: 1;
+display: block;
+width: 155px;
+height: 155px;
+max-width: 100%;
+object-fit: cover;
+object-position: center;
+background: #ffffff;
+border: 4px solid #ffffff;
+border-radius: 50%;
+box-shadow: 0 5px 18px rgba(101, 13, 37, 0.13);
+transition: transform 0.3s ease;
 }
 
 .youth-card:hover .youth-avatar-img {
-    transform: scale(1.05);
+transform: scale(1.04);
 }
 
 .youth-card-body {
-    padding: 1.25rem 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
+display: flex;
+flex: 1;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding: 22px 15px 25px;
+text-align: center;
 }
 
 .youth-role {
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--accent-color);
+display: inline-block;
+margin-bottom: 10px;
+padding: 6px 11px;
+background: #fff0f3;
+color: var(--church-red);
+border-radius: 20px;
+font-size: 11px;
+font-weight: 800;
+letter-spacing: 0.6px;
+line-height: 1.4;
 }
 
-.youth-card h4 {
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--primary-color);
+.youth-card-body h4 {
+margin: 0;
+color: #3d202b;
+font-size: 16px;
+font-weight: 800;
+line-height: 1.55;
+overflow-wrap: anywhere;
 }
 
-/* Footer */
+/* ================================
+FOOTER
+================================ */
+
 .home-footer {
-    background-color: var(--primary-color);
-    color: white;
-    text-align: center;
-    padding: 3rem 5%;
-    margin-top: auto;
+padding: 35px 7%;
+background: #4d0a1d;
+color: #ffffff;
+border-top: 4px solid var(--church-gold);
 }
 
 .footer-content {
-    max-width: 600px;
-    margin: 0 auto;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
+max-width: 1200px;
+margin: 0 auto;
+text-align: center;
 }
 
-.home-footer p {
-    font-weight: 600;
-    font-size: 1.05rem;
+.footer-content p {
+margin: 0 0 8px;
+color: #ffffff;
+font-size: 17px;
+font-weight: 800;
 }
 
-.home-footer span {
-    font-size: 0.9rem;
-    color: #94a3b8;
+.footer-content span {
+color: #eacbd4;
+font-size: 14px;
+line-height: 1.7;
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .home-hero {
-        padding: 4rem 1.5rem;
-    }
-    
-    .youth-section {
-        padding: 3rem 1.2rem;
-    }
+/* ================================
+ANIMATIONS
+================================ */
 
-    .youth-grid {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 1rem;
-    }
+@keyframes home-hero-enter {
+from {
+opacity: 0;
+transform: translateY(15px);
+}
 
-    .youth-avatar-container {
-        height: 160px;
-    }
+to {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+}
+
+/* ================================
+TABLET RESPONSIVE
+================================ */
+
+@media (max-width: 950px) {
+.home-header {
+padding-right: 5%;
+padding-left: 5%;
+}
+
+
+.home-hero {
+    min-height: 520px;
+    padding: 70px 6%;
+}
+
+.youth-section {
+    padding: 70px 5%;
+}
+
+.youth-grid,
+.officials-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.committee-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.youth-avatar-container {
+    height: 215px;
+}
+
+
+}
+
+/* ================================
+MOBILE RESPONSIVE
+================================ */
+
+@media (max-width: 600px) {
+.home-header {
+gap: 12px;
+padding: 13px 5%;
+}
+
+.home-logo-wrapper {
+    width: 44px;
+    height: 44px;
+}
+
+.home-brand {
+    gap: 9px;
+}
+
+.brand-text strong {
+    max-width: 190px;
+    font-size: 13px;
+    line-height: 1.4;
+}
+
+.brand-text span {
+    font-size: 11px;
+    letter-spacing: 1.2px;
+}
+
+.nav-donate {
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+}
+
+.home-hero {
+    min-height: auto;
+    padding: 65px 6% 55px;
+}
+
+.home-hero::before {
+    top: -100px;
+    right: -170px;
+    width: 320px;
+    height: 320px;
+}
+
+.home-content h1 {
+    font-size: clamp(33px, 9vw, 46px);
+    line-height: 1.18;
+    letter-spacing: -0.8px;
+}
+
+.home-description {
+    font-size: 15px;
+    line-height: 1.85;
+}
+
+.home-badge {
+    margin-bottom: 18px;
+    font-size: 10px;
+    letter-spacing: 1.7px;
+}
+
+.home-donate-button {
+    width: 100%;
+    padding: 14px 18px;
+}
+
+.home-verse {
+    margin-top: 30px;
+    padding: 16px;
+}
+
+.home-verse p {
+    font-size: 15px;
+}
+
+.youth-section {
+    padding: 55px 5%;
+}
+
+.youth-heading {
+    margin-bottom: 40px;
+}
+
+.youth-heading h2 {
+    font-size: 29px;
+}
+
+.youth-heading p {
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.youth-group {
+    margin-bottom: 42px;
+}
+
+.group-title {
+    gap: 10px;
+    margin-bottom: 20px;
+    font-size: 21px;
+}
+
+.group-title::before {
+    height: 24px;
+}
+
+.youth-grid,
+.officials-grid,
+.committee-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 13px;
+}
+
+.youth-avatar-container {
+    height: 160px;
+    padding: 13px;
+}
+
+.youth-avatar-img {
+    width: 118px;
+    height: 118px;
+    border-width: 3px;
+}
+
+.youth-card-body {
+    padding: 15px 9px 18px;
+}
+
+.youth-role {
+    padding: 5px 8px;
+    margin-bottom: 8px;
+    font-size: 10px;
+}
+
+.youth-card-body h4 {
+    font-size: 13px;
+    line-height: 1.5;
+}
+
+.home-footer {
+    padding: 28px 5%;
+}
+
+.footer-content p {
+    font-size: 15px;
+}
+
+.footer-content span {
+    font-size: 12px;
+}
+
+}
+
+/* Extra-small phones */
+@media (max-width: 360px) {
+.brand-text strong {
+max-width: 135px;
+font-size: 12px;
+}
+
+.nav-donate {
+    padding: 9px;
+    font-size: 11px;
+}
+
+.youth-grid,
+.officials-grid,
+.committee-grid {
+    grid-template-columns: 1fr;
+}
+
+.youth-avatar-container {
+    height: 200px;
+}
+
+.youth-avatar-img {
+    width: 145px;
+    height: 145px;
+}
+
+}
+
+/* Accessibility: reduce animation when requested */
+@media (prefers-reduced-motion: reduce) {
+.home-page *,
+.home-page *::before,
+.home-page *::after {
+scroll-behavior: auto !important;
+animation-duration: 0.01ms !important;
+animation-iteration-count: 1 !important;
+transition-duration: 0.01ms !important;
+}
 }

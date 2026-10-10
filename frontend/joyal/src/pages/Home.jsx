@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import "./Home.css";
-
+import ChurchInformation from "../components/ChurchInformation";
 function Home() {
     const officials = [
         { 
@@ -52,12 +52,12 @@ function Home() {
         { 
             name: "Ashbin Reji", 
             role: "Committee Member", 
-            image: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&w=400&q=80" 
+            image: "/images/ashbin.png" 
         },
         { 
             name: "Bijin Mathew", 
             role: "Committee Member", 
-            image: "https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?auto=format&fit=crop&w=400&q=80" 
+            image: "/images/bijin.png"
         },
         { 
             name: "Philip David", 
@@ -123,7 +123,7 @@ function Home() {
 
                         <h1>
                             Welcome to <br />
-                            <span className="highlight">St Stephen's CSI Church Youth</span>
+                            <span className="highlight">St Stephen's CSI Church Youth Moment</span>
                         </h1>
 
                         <p className="home-description">
@@ -222,6 +222,8 @@ function Home() {
                     </div>
                 </section>
             </main>
+                <ChurchInformation />
+
 
             {/* Footer */}
             <footer className="home-footer">
