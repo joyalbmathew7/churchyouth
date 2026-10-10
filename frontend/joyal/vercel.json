@@ -1,15 +1,8 @@
+
 {
   "rewrites": [
     {
-      "source": "/joyaladmin",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/donation/:path*",
-      "destination": "/index.html"
-    },
-    {
-      "source": "/joyaladmin/:path*",
+      "source": "/(.*)",
       "destination": "/index.html"
     }
   ]

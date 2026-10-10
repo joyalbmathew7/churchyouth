@@ -46,6 +46,7 @@ ALLOWED_HOSTS = csv_environment(
     "ALLOWED_HOSTS",
     ("churchyouth.onrender.com", "localhost", "127.0.0.1"),
 )
+
 CORS_ALLOWED_ORIGINS = csv_environment(
     "CORS_ALLOWED_ORIGINS",
     (
@@ -53,9 +54,12 @@ CORS_ALLOWED_ORIGINS = csv_environment(
         "http://127.0.0.1:5173",
         "http://localhost:5174",
         "http://127.0.0.1:5174",
+        "https://churchyouth-frontend-nine.vercel.app",
     ),
 )
+
 CORS_ALLOW_ALL_ORIGINS = False
+
 CSRF_TRUSTED_ORIGINS = csv_environment(
     "CSRF_TRUSTED_ORIGINS",
     (
@@ -65,13 +69,11 @@ CSRF_TRUSTED_ORIGINS = csv_environment(
         "http://127.0.0.1:8000",
         "http://localhost:5174",
         "http://127.0.0.1:5174",
+        "https://churchyouth-frontend-nine.vercel.app",
     ),
 )
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "https://churchyouth-frontend-nine.vercel.app",
-]
+
 SESSION_COOKIE_SECURE = not DEBUG
 CSRF_COOKIE_SECURE = not DEBUG
 SESSION_COOKIE_SAMESITE = "Lax"
@@ -99,17 +101,16 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-      "corsheaders.middleware.CorsMiddleware", 
-    'django.middleware.security.SecurityMiddleware',
+    "django.middleware.security.SecurityMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
-
 ROOT_URLCONF = 'config.urls'
 
 TEMPLATES = [
