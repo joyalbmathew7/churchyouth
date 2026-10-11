@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import Home from "./pages/Home";
 import Donation from "./pages/Donation";
+import Connect from "./pages/Connect";
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "").replace(
 //+$/,
@@ -26,7 +27,9 @@ function App() {
 return ( <BrowserRouter> <Routes>
 <Route path="/" element={<Home />} />
 <Route path="/donation/" element={<Donation />} />
+<Route path="/connect" element={<Connect />} />
 <Route path="/joyaladmin/*" element={<AdminRedirect />} /> </Routes> </BrowserRouter>
+
 );
 }
 

@@ -1,5 +1,7 @@
 import { Link } from "react-router-dom";
 import "./Home.css";
+import SocialMedia from "../components/SocialMedia";
+
 import ChurchInformation from "../components/ChurchInformation";
 function Home() {
     const officials = [
@@ -223,6 +225,7 @@ function Home() {
                 </section>
             </main>
                 <ChurchInformation />
+                <SocialMedia />
 
 
             {/* Footer */}
