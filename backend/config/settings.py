@@ -55,7 +55,7 @@ CORS_ALLOWED_ORIGINS = csv_environment(
         "http://localhost:5174",
         "http://127.0.0.1:5174",
         "https://churchyouth-frontend-nine.vercel.app",
-        "https://churchyouth-frontend-hueixo8xl-joyal5.vercel.app/"
+        # "https://churchyouth-frontend-hueixo8xl-joyal5.vercel.app/"
     ),
 )
 
