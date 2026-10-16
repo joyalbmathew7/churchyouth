@@ -4,6 +4,7 @@ import ScrollToTop from "./components/ScrollToTop"; // 1. Import it here
 import Home from "./pages/Home";
 import Donation from "./pages/Donation";
 import Connect from "./pages/Connect";
+   import About from "./pages/About";
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "").replace(
     /\/+$/,
@@ -33,6 +34,7 @@ function App() {
                 <Route path="/donation/" element={<Donation />} />
                 <Route path="/connect" element={<Connect />} />
                 <Route path="/joyaladmin/*" element={<AdminRedirect />} />
+                   <Route path="/about" element={<About />} />
             </Routes>
         </BrowserRouter>
     );

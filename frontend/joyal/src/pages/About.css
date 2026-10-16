@@ -1,0 +1,49 @@
+/* About page: only what Home.css doesn't already provide */
+
+.about-hero {
+    min-height: 380px;
+}
+
+.about-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.about-card {
+    padding: 28px 24px;
+    border-top: 4px solid var(--church-red);
+}
+
+.about-card h4 {
+    margin: 0 0 12px;
+    color: var(--church-red-dark);
+    font-size: 19px;
+    font-weight: 800;
+}
+
+.about-card p {
+    margin: 0;
+    color: var(--church-muted);
+    font-size: 15px;
+    line-height: 1.8;
+}
+
+@media (max-width: 950px) {
+    .about-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .about-hero {
+        min-height: auto;
+    }
+
+    .about-grid {
+        grid-template-columns: 1fr;
+        gap: 13px;
+    }
+
+    .about-card {
+        padding: 22px 18px;
+    }
+}

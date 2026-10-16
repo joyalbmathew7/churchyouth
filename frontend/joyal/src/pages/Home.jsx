@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import "./Home.css";
 import SocialMedia from "../components/SocialMedia";
+import Header from "../components/Header";
 
 import ChurchInformation from "../components/ChurchInformation";
 function Home() {
@@ -101,29 +102,7 @@ function Home() {
     return (
         <div className="home-page">
             {/* Header / Navbar */}
-            <header className="home-header">
-                <Link to="/" className="home-brand">
-                    <div className="home-logo-wrapper">
-                        <img
-                            src="/images/csi-logo.png"
-                            alt="CSI Church logo"
-                            className="home-logo"
-                            onError={(e) => {
-                                // Fallback placeholder if local image doesn't exist yet
-                                e.target.src = "https://images.unsplash.com/photo-1543807535-eceef0bc6599?auto=format&fit=crop&w=100&q=80";
-                            }}
-                        />
-                    </div>
-                    <div className="brand-text">
-                        <strong>St. Stephen's C.S.I Church</strong>
-                        <span>Puthuval</span>
-                    </div>
-                </Link>
-
-                <Link to="/donation/" className="nav-donate">
-                    Donate Now
-                </Link>
-            </header>
+            <Header />
 
             <main>
                 {/* Hero Section */}
@@ -250,3 +229,4 @@ function Home() {
 }
 
 export default Home;
+
