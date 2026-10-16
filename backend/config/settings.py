@@ -241,4 +241,4 @@ MAILERS = {
 }
 RAZORPAY_KEY_ID = os.getenv("RAZORPAY_KEY_ID")
 RAZORPAY_KEY_SECRET = os.getenv("RAZORPAY_KEY_SECRET")
-CHURCH_UPI_ID = "9061735003@okbizaxis"
+CHURCH_UPI_ID = "joyalbmathew2001dec19@oksbi"
