@@ -96,13 +96,11 @@ function Select({ list, placeholder, ...props }) {
 function Donation() {
     const [form, setForm] = useState(EMPTY_FORM);
     const [lists, setLists] = useState(EMPTY_LISTS);
-    const [result, setResult] = useState(null); // successful payment
-    const [pending, setPending] = useState(null); // paid, but not verified yet
+const [upiPayment, setUpiPayment] = useState(null);
     const [busy, setBusy] = useState(false);
     const [status, setStatus] = useState("");
     const [message, setMessage] = useState("");
     const submitLock = useRef(false);
-    const verifyLock = useRef(false);
 
     const loadOptions = useCallback(() => {
         Object.keys(EMPTY_LISTS).forEach(async (key) => {
@@ -138,149 +136,91 @@ function Donation() {
         setMessage(text);
     }
 
-    function finish(type, text) {
-        submitLock.current = false;
-        verifyLock.current = false;
-        setBusy(false);
-        notify(type, text);
+function finish(type, text) {
+    submitLock.current = false;
+    setBusy(false);
+    notify(type, text);
+}
+
+
+async function handleSubmit(event) {
+    event.preventDefault();
+
+    if (submitLock.current || upiPayment) return;
+
+    const name = form.name.trim();
+    const phone = form.phone_number.trim();
+    const area = form.area_place.trim();
+    const digits = phone.replace(/\D/g, "");
+
+    const problem = !name
+        ? "Please enter your full name."
+        : !area
+          ? "Please enter your area or place."
+          : !/^[+0-9()\s-]+$/.test(phone) ||
+              digits.length < 7 ||
+              digits.length > 20
+            ? "Please enter a valid phone number."
+            : "";
+
+    if (problem) {
+        notify("error", problem);
+        return;
     }
 
-    async function verifyPayment(payment) {
-        if (verifyLock.current) return;
-        verifyLock.current = true;
-        submitLock.current = true;
-        setBusy(true);
-        notify("verifying", "Confirming your payment with the church.");
+    submitLock.current = true;
+    setBusy(true);
+    notify("creating", "Creating your donation record...");
 
-        try {
-            const { ok, data } = await request("/payments/verify/", {
-                donation_id: payment.donationId,
-                razorpay_payment_id: payment.response.razorpay_payment_id,
-                razorpay_order_id: payment.response.razorpay_order_id,
-                razorpay_signature: payment.response.razorpay_signature,
-            });
-            if (!ok || data.payment_status !== "success") throw new Error();
+    try {
+        const { ok, data } = await request("/donations/", {
+            ...form,
+            name,
+            phone_number: phone,
+            area_place: area,
+            prayer_area: form.prayer_area || null,
+        });
 
-            setResult({
-                donationId: payment.donationId,
-                transactionId: data.transaction_id,
-                amount: payment.amount,
-            });
-            setPending(null);
-            setForm(EMPTY_FORM);
-            finish("success", "");
-        } catch {
-            finish(
-                "error",
-                "We couldn’t confirm your payment yet. Please retry verification before making another donation.",
+        if (!ok) {
+            throw new Error(
+                errorText(
+                    data,
+                    "Your donation could not be created. Please try again.",
+                ),
             );
         }
-    }
 
-    async function handleSubmit(event) {
-        event.preventDefault();
-        if (submitLock.current || pending) return;
-
-        const name = form.name.trim();
-        const phone = form.phone_number.trim();
-        const area = form.area_place.trim();
-        const digits = phone.replace(/\D/g, "");
-
-        const problem = !name
-            ? "Please enter your full name."
-            : !area
-              ? "Please enter your area or place."
-              : !/^[+0-9()\s-]+$/.test(phone) || digits.length < 7 || digits.length > 20
-                ? "Please enter a valid phone number."
-                : "";
-        if (problem) return notify("error", problem);
-
-        submitLock.current = true;
-        setBusy(true);
-        notify("creating", "Preparing your secure payment…");
-
-        try {
-            const { ok, data } = await request("/donations/", {
-                ...form,
-                name,
-                phone_number: phone,
-                area_place: area,
-                prayer_area: form.prayer_area || null,
-            });
-            if (!ok) {
-                throw new Error(
-                    errorText(
-                        data,
-                        "Your donation could not be started. Please check your details and try again.",
-                    ),
-                );
-            }
-            if (
-                !data.donation_id ||
-                !data.razorpay_order_id ||
-                !data.razorpay_key_id ||
-                !window.Razorpay
-            ) {
-                throw new Error(
-                    "Secure payment is temporarily unavailable. Please try again later.",
-                );
-            }
-
-            notify("checkout", "Opening Razorpay checkout…");
-            let started = false;
-            let failed = false;
-
-            const checkout = new window.Razorpay({
-                key: data.razorpay_key_id,
-                amount: data.amount,
-                currency: data.currency,
-                name: "St. Stephen's C.S.I Church, Puthuval",
-                description: "Church donation",
-                order_id: data.razorpay_order_id,
-                prefill: { name: form.name, contact: form.phone_number },
-                theme: { color: "#9f1239" },
-                handler: async (response) => {
-                    started = true;
-                    const payment = {
-                        donationId: data.donation_id,
-                        amount: form.amount,
-                        response,
-                    };
-                    setPending(payment);
-                    await verifyPayment(payment);
-                },
-                modal: {
-                    ondismiss: () => {
-                        if (submitLock.current && !started && !failed) {
-                            finish(
-                                "cancelled",
-                                "Payment was cancelled. Your donation has not been confirmed.",
-                            );
-                        }
-                    },
-                },
-            });
-            checkout.on("payment.failed", () => {
-                failed = true;
-                finish(
-                    "error",
-                    "The payment could not be completed. Please try again or choose another payment method.",
-                );
-            });
-            checkout.open();
-        } catch (error) {
-            finish(
-                "error",
-                error instanceof Error
-                    ? error.message
-                    : "Something went wrong. Please try again.",
+        if (!data.donation_id || !data.upi_payment_url) {
+            throw new Error(
+                "The UPI payment link was not returned. Please contact the church.",
             );
         }
+
+        setUpiPayment({
+            donationId: data.donation_id,
+            amount: data.amount,
+            url: data.upi_payment_url,
+        });
+
+        setForm(EMPTY_FORM);
+        finish(
+            "pending",
+            "Your donation record has been created. Payment is not yet confirmed.",
+        );
+    } catch (error) {
+        finish(
+            "error",
+            error instanceof Error
+                ? error.message
+                : "Something went wrong. Please try again.",
+        );
     }
+}
+
+    
 
     const optionsFailed = Object.values(lists).some((l) => l.status === "error");
-    const canSubmit = !busy && !pending && lists.purposes.items.length > 0;
-
+    const canSubmit = !busy && !upiPayment && lists.purposes.items.length > 0;
     return (
         <div className="giving-page">
             <header className="site-header">
@@ -336,40 +276,52 @@ function Donation() {
                     </div>
 
                     <div className="donation-card">
-                        {result ? (
-                            <div className="success-panel" aria-live="polite">
-                                <div className="check">✓</div>
-                                <p className="kicker">Gift received</p>
-                                <h2>Thank you for giving.</h2>
-                                <p className="success-copy">
-                                    Your generosity means a great deal to our church community.
-                                </p>
-                                <dl className="receipt">
-                                    <div>
-                                        <dt>Donation amount</dt>
-                                        <dd>
-                                            ₹
-                                            {Number(result.amount).toLocaleString("en-IN", {
-                                                minimumFractionDigits: 2,
-                                            })}
-                                        </dd>
-                                    </div>
-                                    <div>
-                                        <dt>Transaction ID</dt>
-                                        <dd>{result.transactionId || "Confirmed"}</dd>
-                                    </div>
-                                    <div>
-                                        <dt>Donation reference</dt>
-                                        <dd>{result.donationId}</dd>
-                                    </div>
-                                </dl>
-                                <a
-                                    className="submit-button"
-                                    href={`${API}/donations/${result.donationId}/receipt/`}
-                                >
-                                    Download PDF receipt
-                                </a>
-                            </div>
+                        {upiPayment ? (
+    <div className="success-panel" aria-live="polite">
+        <p className="kicker">Donation created</p>
+        <h2>Complete your UPI payment</h2>
+
+        <p>
+            Your donation record has been saved, but your payment
+            has not yet been verified by the church.
+        </p>
+
+        <dl className="receipt">
+            <div>
+                <dt>Donation amount</dt>
+                <dd>
+                    ₹
+                    {Number(upiPayment.amount).toLocaleString("en-IN", {
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2,
+                    })}
+                </dd>
+            </div>
+
+            <div>
+                <dt>Donation reference</dt>
+                <dd>{upiPayment.donationId}</dd>
+            </div>
+
+            <div>
+                <dt>Payment status</dt>
+                <dd>Pending verification</dd>
+            </div>
+        </dl>
+
+        <a className="submit-button" href={upiPayment.url}>
+            Pay with UPI →
+        </a>
+
+        <p className="payment-note">
+            Your UPI app should open with the amount prefilled.
+            Check the recipient and amount before approving payment.
+            The church must verify the transaction before issuing
+            your confirmed receipt.
+        </p>
+    </div>
+
+
                         ) : (
                             <form onSubmit={handleSubmit}>
                                 <div className="form-heading">
@@ -475,45 +427,34 @@ function Donation() {
                                         </button>
                                     </div>
                                 )}
-
-                                {pending && status === "error" && (
-                                    <div className="msg msg-error" role="alert">
-                                        <p>{message}</p>
-                                        <button
-                                            type="button"
-                                            className="link-btn"
-                                            disabled={busy}
-                                            onClick={() => verifyPayment(pending)}
-                                        >
-                                            {busy ? "Verifying payment…" : "Retry payment verification"}
-                                        </button>
-                                    </div>
-                                )}
-
-                                {message && !pending && (
-                                    <div
-                                        className={status === "error" ? "msg msg-error" : "msg"}
-                                        role={status === "error" ? "alert" : "status"}
-                                        aria-live="polite"
-                                    >
-                                        {busy && <i className="spinner" aria-hidden="true" />}
-                                        {message}
-                                    </div>
-                                )}
+{message && (
+    <div
+        className={status === "error" ? "msg msg-error" : "msg"}
+        role={status === "error" ? "alert" : "status"}
+        aria-live="polite"
+    >
+        {busy && <i className="spinner" aria-hidden="true" />}
+        {message}
+    </div>
+)}
+{message && (
+    <div
+        className={status === "error" ? "msg msg-error" : "msg"}
+        role={status === "error" ? "alert" : "status"}
+        aria-live="polite"
+    >
+        {busy && <i className="spinner" aria-hidden="true" />}
+        {message}
+    </div>
+)}
 
                                 <button className="submit-button" type="submit" disabled={!canSubmit}>
-                                    {busy
-                                        ? status === "verifying"
-                                            ? "Verifying payment…"
-                                            : "Preparing payment…"
-                                        : pending
-                                          ? "Payment confirmation needed"
-                                          : "Continue to secure payment →"}
+{busy ? "Creating donation..." : "Continue to UPI payment →"}
                                 </button>
 
                                 <p className="payment-note">
-                                    You’ll complete payment through Razorpay checkout. Your card
-                                    and UPI details are not collected on this page.
+   Payments are verified manually by the church. Submitting this
+    form or opening a UPI app does not confirm that payment succeeded.
                                 </p>
                             </form>
                         )}
