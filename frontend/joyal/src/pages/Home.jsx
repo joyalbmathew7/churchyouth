@@ -38,6 +38,11 @@ function Home() {
             role: "Councilor", 
             image: "/images/binil.png" 
         },
+                { 
+            name: "Allen  Robby", 
+            role: "Councilor", 
+            image: "/images/alan.png" 
+        },
         { 
             name: "Joyal B Mathew", 
             role: "Councilor", 
@@ -46,7 +51,7 @@ function Home() {
         { 
             name: "Somi Mathew", 
             role: "Councilor", 
-            image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" 
+            image: "/images/somi.png" 
         },
     ];
 
@@ -69,22 +74,27 @@ function Home() {
         { 
             name: "Anisa Amiyan Kunju", 
             role: "Committee Member", 
-            image: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=400&q=80" 
+            image: "/images/aneesa.jpeg" 
         },
         { 
             name: "Christo Susan Mathew", 
             role: "Committee Member", 
-            image: "https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=400&q=80" 
+            image: "/images/christo.jpeg" 
         },
         { 
             name: "Meedhal Ann Mathew", 
             role: "Committee Member", 
-            image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=400&q=80" 
+            image: "/images/meethal.png" 
         },
         { 
             name: "Shalin Mariam Stephen", 
             role: "Committee Member", 
-            image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80" 
+            image: "/images/shalin.png" 
+        },
+                { 
+            name: "Ajoop  Daniel", 
+            role: "Committee Member", 
+            image: "/images/ajoop.jpeg" 
         },
     ];
 
