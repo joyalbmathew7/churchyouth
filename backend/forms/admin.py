@@ -82,9 +82,9 @@ class DonationAdmin(admin.ModelAdmin):
         "prayer_area",
         "purpose",
         "amount",
-        "payment_status",
+        # "payment_status",
         "gateway_order_id",
-        "transaction_id",
+        # "transaction_id",
         "created_at",
     )
 
