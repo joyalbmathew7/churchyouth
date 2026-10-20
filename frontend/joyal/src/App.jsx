@@ -6,6 +6,7 @@ import Donation from "./pages/Donation";
 import Connect from "./pages/Connect";
    import About from "./pages/About";
    import ActivityDetail from "./components/ActivityDetail";
+   import Game from "./pages/Game";
 
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "").replace(
@@ -38,6 +39,7 @@ function App() {
                 <Route path="/joyaladmin/*" element={<AdminRedirect />} />
                    <Route path="/about" element={<About />} />
                    <Route path="/activities/:id" element={<ActivityDetail />} />
+                   <Route path="/game/" element={<Game />} />
             </Routes>
         </BrowserRouter>
     );

@@ -5,6 +5,7 @@ import SocialMedia from "../components/SocialMedia";
 import Header from "../components/Header";
 import ActivitiesSection from "../components/ActivitiesSection";
 import ChurchInformation from "../components/ChurchInformation";
+import FlappyGame from "../components/FlappyGame";
 
 function Home() {
     const officials = [
@@ -122,7 +123,7 @@ function Home() {
                                 St. Stephen's CSI Church Youth Movement
                             </span>
                         </h1>
-
+                        <FlappyGame />
                         <p className="home-description">
                             A place to grow in faith, share God's love,
                             and serve our community together in unity and grace.

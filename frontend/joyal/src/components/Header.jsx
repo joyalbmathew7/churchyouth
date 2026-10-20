@@ -1,6 +1,8 @@
+
 import { useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import "./Header.css"
+import "./Header.css";
+
 function Header() {
     const [menuOpen, setMenuOpen] = useState(false);
     const closeMenu = () => setMenuOpen(false);
@@ -19,13 +21,13 @@ function Header() {
                         }}
                     />
                 </div>
+
                 <div className="brand-text">
                     <strong>St. Stephen's C.S.I Church</strong>
                     <span>Puthuval</span>
                 </div>
             </Link>
 
-            {/* Hamburger button (only visible on mobile) */}
             <button
                 type="button"
                 className={`nav-toggle ${menuOpen ? "open" : ""}`}
@@ -39,10 +41,27 @@ function Header() {
                 <span></span>
             </button>
 
-            <nav id="main-nav" className={`nav-links ${menuOpen ? "open" : ""}`}>
-                <NavLink to="/" end onClick={closeMenu}>Home</NavLink>
-                <NavLink to="/about" onClick={closeMenu}>About</NavLink>
-                <Link to="/donation/" className="nav-donate" onClick={closeMenu}>
+            <nav
+                id="main-nav"
+                className={`nav-links ${menuOpen ? "open" : ""}`}
+            >
+                <NavLink to="/" end onClick={closeMenu}>
+                    Home
+                </NavLink>
+
+                <NavLink to="/about" onClick={closeMenu}>
+                    About
+                </NavLink>
+
+                <NavLink to="/game/" onClick={closeMenu}>
+                    Play Game
+                </NavLink>
+
+                <Link
+                    to="/donation/"
+                    className="nav-donate"
+                    onClick={closeMenu}
+                >
                     Donate Now
                 </Link>
             </nav>

@@ -1,0 +1,99 @@
+
+.flappy-section {
+  width: 100%;
+  padding: 48px 16px;
+  text-align: center;
+  background: #fffaf0;
+  color: #3d3024;
+  box-sizing: border-box;
+}
+
+.flappy-heading h2 {
+  margin: 0 0 10px;
+  font-size: clamp(24px, 4vw, 34px);
+}
+
+.flappy-heading p {
+  margin: 0 0 24px;
+  color: #75685a;
+}
+
+.flappy-game {
+  position: relative;
+  width: min(360px, 100%);
+  margin: 0 auto;
+  overflow: hidden;
+  border: 3px solid #568f43;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px #00000018;
+  line-height: 0;
+}
+
+.flappy-canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  touch-action: none;
+  cursor: pointer;
+}
+
+.flappy-score {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  left: 12px;
+  right: 12px;
+  display: flex;
+  justify-content: space-between;
+  color: white;
+  font-size: 15px;
+  font-weight: 800;
+  line-height: 1.4;
+  text-shadow: 1px 2px 3px #25482a;
+  pointer-events: none;
+}
+
+.flappy-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  box-sizing: border-box;
+  background: #173c3185;
+  color: white;
+  line-height: 1.5;
+}
+
+.flappy-overlay h3 {
+  margin: 0 0 8px;
+  font-size: 26px;
+}
+
+.flappy-overlay p {
+  margin: 0 0 20px;
+}
+
+.flappy-overlay button {
+  border: none;
+  border-radius: 24px;
+  padding: 12px 24px;
+  background: #fff0c7;
+  color: #29482c;
+  font-weight: 800;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.flappy-overlay button:hover {
+  background: #ffffff;
+  transform: translateY(-1px);
+}
+
+.flappy-help {
+  margin-top: 16px;
+  font-size: 14px;
+  color: #75685a;
+}
