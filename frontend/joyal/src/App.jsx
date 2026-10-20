@@ -6,6 +6,7 @@ import Donation from "./pages/Donation";
 import Connect from "./pages/Connect";
    import About from "./pages/About";
    import ActivityDetail from "./components/ActivityDetail";
+
    import Game from "./pages/Game";
 
 
