@@ -267,10 +267,9 @@ async function handleSubmit(event) {
                 <section className="donation-layout" id="donation-form">
                     <div className="form-intro">
                         <p className="kicker">Your generosity</p>
-                        <h2>Make your gift</h2>
+                        <h2>This page is underconstruction </h2>
                         <p>
-                            Share a few details to begin. You’ll review your payment
-                            securely with Razorpay in the next step.
+                            Sorry for inconvience. This page will activate soon as possible
                         </p>
                         <p className="required-note">Fields marked with * are required.</p>
                     </div>
