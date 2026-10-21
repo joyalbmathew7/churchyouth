@@ -1,8 +1,8 @@
 
-from urllib.parse import urlencode
-
 from django.conf import settings
 from django.http import FileResponse
+
+import razorpay
 
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny
@@ -41,21 +41,32 @@ class DonationCreateView(generics.CreateAPIView):
 
         donation = serializer.save(payment_status="pending")
 
-        upi_id = getattr(
-            settings,
-            "CHURCH_UPI_ID",
-            "replace-with-church-upi-id",
-        )
+        try:
+            client = razorpay.Client(
+                auth=(
+                    settings.RAZORPAY_KEY_ID,
+                    settings.RAZORPAY_KEY_SECRET,
+                )
+            )
 
-        upi_parameters = urlencode({
-            "pa": upi_id,
-            "pn": "St. Stephens CSI Church Puthuval",
-            "am": f"{donation.amount:.2f}",
-            "cu": "INR",
-            "tn": f"Church donation {donation.id}",
-        })
+            order = client.order.create(
+                data={
+                    "amount": int(donation.amount * 100),
+                    "currency": "INR",
+                    "receipt": f"donation_{donation.id}",
+                }
+            )
 
-        upi_payment_url = f"upi://pay?{upi_parameters}"
+            donation.razorpay_order_id = order["id"]
+            donation.save(update_fields=["razorpay_order_id"])
+
+        except Exception:
+            donation.delete()
+
+            return Response(
+                {"error": "Unable to create payment order. Please try again."},
+                status=status.HTTP_502_BAD_GATEWAY,
+            )
 
         return Response(
             {
@@ -63,7 +74,8 @@ class DonationCreateView(generics.CreateAPIView):
                 "amount": str(donation.amount),
                 "currency": "INR",
                 "payment_status": donation.payment_status,
-                "upi_payment_url": upi_payment_url,
+                "razorpay_order_id": order["id"],
+                "razorpay_key_id": settings.RAZORPAY_KEY_ID,
             },
             status=status.HTTP_201_CREATED,
         )
@@ -80,9 +92,7 @@ class DonationReceiptView(APIView):
             )
         except Donation.DoesNotExist:
             return Response(
-                {
-                    "error": "Successful donation not found."
-                },
+                {"error": "Successful donation not found."},
                 status=status.HTTP_404_NOT_FOUND,
             )
 
