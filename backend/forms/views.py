@@ -3,7 +3,9 @@ from django.conf import settings
 from django.http import FileResponse
 
 import razorpay
+import logging
 
+logger = logging.getLogger(__name__)
 from rest_framework import generics, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -61,12 +63,14 @@ class DonationCreateView(generics.CreateAPIView):
             donation.save(update_fields=["razorpay_order_id"])
 
         except Exception:
+            logger.exception("Failed to create Razorpay order")
+
             donation.delete()
 
             return Response(
                 {"error": "Unable to create payment order. Please try again."},
                 status=status.HTTP_502_BAD_GATEWAY,
-            )
+        )
 
         return Response(
             {
