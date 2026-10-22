@@ -59,8 +59,8 @@ class DonationCreateView(generics.CreateAPIView):
                 }
             )
 
-            donation.razorpay_order_id = order["id"]
-            donation.save(update_fields=["razorpay_order_id"])
+            donation.gateway_order_id = order["id"]
+            donation.save(update_fields=["gateway_order_id"])
 
         except Exception:
             logger.exception("Failed to create Razorpay order")
