@@ -74,7 +74,6 @@ class DonationAdmin(admin.ModelAdmin):
         "transaction_id",
     )
 
-    change_list_template = "admin/forms/donation/change_list.html"
     readonly_fields = (
         "name",
         "phone_number",
