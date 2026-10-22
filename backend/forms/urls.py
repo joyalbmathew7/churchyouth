@@ -6,6 +6,7 @@ from .views import (
     PrayerAreaListView,
     DonationCreateView,
     DonationReceiptView,
+    DonationVerifyView
 )
 
 
@@ -30,4 +31,9 @@ urlpatterns = [
         DonationReceiptView.as_view(),
         name="donation-receipt",
     ),
+    path(
+    "donations/verify/",
+    DonationVerifyView.as_view(),
+    name="donation-verify",
+),
 ]

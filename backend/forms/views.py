@@ -85,6 +85,102 @@ class DonationCreateView(generics.CreateAPIView):
         )
 
 
+class DonationVerifyView(APIView):
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        donation_id = request.data.get("donation_id")
+        razorpay_order_id = request.data.get("razorpay_order_id")
+        razorpay_payment_id = request.data.get("razorpay_payment_id")
+        razorpay_signature = request.data.get("razorpay_signature")
+
+        if not all([
+            donation_id,
+            razorpay_order_id,
+            razorpay_payment_id,
+            razorpay_signature,
+        ]):
+            return Response(
+                {"error": "Missing payment verification details."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            donation = Donation.objects.get(id=donation_id)
+        except Donation.DoesNotExist:
+            return Response(
+                {"error": "Donation not found."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        # Make sure the order belongs to this donation.
+        if donation.gateway_order_id != razorpay_order_id:
+            return Response(
+                {"error": "Order does not match this donation."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        # Don't verify or process the same donation again.
+        if donation.payment_status == "success":
+            return Response(
+                {"error": "This donation is already marked successful."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        try:
+            client = razorpay.Client(
+                auth=(
+                    settings.RAZORPAY_KEY_ID,
+                    settings.RAZORPAY_KEY_SECRET,
+                )
+            )
+
+            client.utility.verify_payment_signature({
+                "razorpay_order_id": razorpay_order_id,
+                "razorpay_payment_id": razorpay_payment_id,
+                "razorpay_signature": razorpay_signature,
+            })
+
+            # Confirm payment status with Razorpay's API as well.
+            payment = client.payment.fetch(razorpay_payment_id)
+
+            if (
+                payment.get("order_id") != razorpay_order_id
+                or payment.get("status") != "captured"
+                or int(payment.get("amount", 0)) != int(donation.amount * 100)
+                or payment.get("currency") != "INR"
+            ):
+                return Response(
+                    {"error": "Payment is not captured or does not match."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            donation.payment_status = "success"
+            donation.transaction_id = razorpay_payment_id
+            donation.save(
+                update_fields=["payment_status", "transaction_id"]
+            )
+
+            return Response({
+                "message": "Payment verified successfully.",
+                "donation_id": donation.id,
+                "payment_status": donation.payment_status,
+                "receipt_url": f"/api/v1/forms/donations/{donation.id}/receipt/",
+            })
+
+        except razorpay.errors.SignatureVerificationError:
+            return Response(
+                {"error": "Invalid payment signature."},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+        except Exception:
+            logger.exception("Razorpay payment verification failed")
+            return Response(
+                {"error": "Unable to verify payment. Please contact the church."},
+                status=status.HTTP_502_BAD_GATEWAY,
+            )
+
+
 class DonationReceiptView(APIView):
     permission_classes = [AllowAny]
 
