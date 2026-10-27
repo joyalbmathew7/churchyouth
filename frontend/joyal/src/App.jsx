@@ -8,7 +8,7 @@ import Connect from "./pages/Connect";
    import ActivityDetail from "./components/ActivityDetail";
 
    import Game from "./pages/Game";
-
+import PrayerHouses from "./components/PrayerHouses";
 
 const API_BASE_URL = (import.meta.env.VITE_API_BASE_URL || "").replace(
     /\/+$/,
