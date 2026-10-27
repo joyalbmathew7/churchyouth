@@ -52,6 +52,9 @@ function Header() {
                 <NavLink to="/about" onClick={closeMenu}>
                     About
                 </NavLink>
+                <NavLink to="/prayer-houses/" onClick={closeMenu}>
+    Prayer Houses
+</NavLink>
 
                 <NavLink to="/game/" onClick={closeMenu}>
                     Play Game

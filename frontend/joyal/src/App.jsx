@@ -41,6 +41,10 @@ function App() {
                    <Route path="/about" element={<About />} />
                    <Route path="/activities/:id" element={<ActivityDetail />} />
                    <Route path="/game/" element={<Game />} />
+                   <Route
+                        path="/prayer-houses/"
+                        element={<PrayerHouses />}
+                    />
             </Routes>
         </BrowserRouter>
     );
