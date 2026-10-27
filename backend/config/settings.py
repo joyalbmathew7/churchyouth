@@ -88,6 +88,7 @@ SECURE_HSTS_PRELOAD = False
 # Application definition
 
 INSTALLED_APPS = [
+    'prayerhouses',
     'corsheaders',
     "adminy",
     "forms",

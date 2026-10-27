@@ -13,4 +13,5 @@ urlpatterns = [
         "api/v1/forms/",
         include("forms.urls"),
     ),
+    path("api/v1/prayerhouses/", include("prayerhouses.urls")),
 ]
