@@ -19,8 +19,8 @@ function PrayerHouses() {
                 setError("");
 
                 const [categoriesResponse, housesResponse] = await Promise.all([
-                    fetch(`${API_BASE_URL}/prayerhouses/categories/`),
-                    fetch(`${API_BASE_URL}/prayerhouses/`),
+                    fetch(`${VITE_API_BASE_URL}/prayerhouses/categories/`),
+                    fetch(`${VITE_API_BASE_URL}/prayerhouses/`),
                 ]);
 
                 if (!categoriesResponse.ok || !housesResponse.ok) {
