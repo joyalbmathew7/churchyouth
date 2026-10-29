@@ -458,7 +458,7 @@ function Donation() {
                 <section className="giving-hero">
                     <div className="hero-copy">
                         <p className="eyebrow">
-                            A generous heart brings people together
+                            This page is underconstruction
                         </p>
 
                         <h1>
@@ -468,7 +468,7 @@ function Donation() {
                         </h1>
 
                         <p className="hero-description">
-                            Your generosity supports the ministry and
+                            Your generosity supports the
                             community of St. Stephen&apos;s C.S.I Church,
                             Puthuval.
                         </p>
@@ -477,12 +477,10 @@ function Donation() {
 
                 <section className="donation-layout" id="donation-form">
                     <div className="form-intro">
-                        <p className="kicker">Your generosity</p>
-                        <h2>Every gift makes a difference</h2>
+                        <p className="kicker">Sorry for your inconvience</p>
+                        <h2>This page is now underconstruction </h2>
                         <p>
-                            Thank you for supporting our church and
-                            community. Please enter your donation details
-                            below.
+                            Due to razorpay issue, payment cannot work well, but this will be fix as soon as possible
                         </p>
                         <p className="required-note">
                             Fields marked with * are required.
